@@ -9,7 +9,7 @@ bool IsLeapYear(int year)
 	return false;
 }
 bool IsyearTrue(int year)
-{
+{//lhl
 	if (year <= 0)
 		return false;
 	return true;
@@ -26,7 +26,7 @@ bool IsDayTrue(int year, int month, int day)
 	if (IsMonthTrue(month))
 	{
 		if (month == 4 || month == 6 || month == 9 || month == 11)
-		{
+		{//lhl
 			if (day >= 1 && day <= 30)
 			{
 				return true;
@@ -64,10 +64,10 @@ int nextBirthday(int year, int month, int day)
 	int now_month = t.tm_mon + 1;
 	int now_day = t.tm_mday;
 
-
+	//lhl
 
 	//今年生日还没到
-	int this_yearToBirthday = 1;
+	int this_yearToBirthday = 0;
 
 	if (now_month < month)
 	{
@@ -80,7 +80,7 @@ int nextBirthday(int year, int month, int day)
 					this_yearToBirthday = this_yearToBirthday + 30 - now_day;
 				}
 				else if (i == 1 || i == 3 || i == 5 || i == 7 || i == 8 || i == 10 || i == 12)
-				{
+				{//lhl
 					this_yearToBirthday = this_yearToBirthday + 31 - now_day;
 				}
 				else if (i == 2)
@@ -99,14 +99,14 @@ int nextBirthday(int year, int month, int day)
 				this_yearToBirthday = this_yearToBirthday + day;
 			}
 			else
-			{
+			{//lhl
 				if (i == 4 || i == 6 || i == 9 || i == 11)
 				{
-					this_yearToBirthday = this_yearToBirthday + 31;
+					this_yearToBirthday = this_yearToBirthday + 30;
 				}
 				else if (i == 1 || i == 3 || i == 5 || i == 7 || i == 8 || i == 10 || i == 12)
 				{
-					this_yearToBirthday = this_yearToBirthday + 30;
+					this_yearToBirthday = this_yearToBirthday + 31;
 				}
 				else if (i == 2)
 				{
@@ -117,7 +117,7 @@ int nextBirthday(int year, int month, int day)
 
 					}
 					else this_yearToBirthday = this_yearToBirthday + 28;
-				}
+				}//lhl
 			}
 		}
 		return this_yearToBirthday;
@@ -130,13 +130,13 @@ int nextBirthday(int year, int month, int day)
 
 	//不是当年生日：
 	//当年剩余天数
-	int this_year_remain = 0;
+	int this_year_remain = 1;
 	for (int i = now_month; i <= 12; i++)
 	{
 		if (i == now_month)
 		{
 			if (i == 4 || i == 6 || i == 9 || i == 11)
-			{
+			{//lhl
 				this_year_remain = this_year_remain + 30 - now_day;
 			}
 			else if (i == 1 || i == 3 || i == 5 || i == 7 || i == 8 || i == 10 || i == 12)
@@ -171,7 +171,7 @@ int nextBirthday(int year, int month, int day)
 				else this_year_remain = this_year_remain + 28;
 			}
 		}
-
+		//lhl
 	}
 	//第二年到生日的天数
 	int next_Year_next_birthday = 0;
@@ -188,7 +188,7 @@ int nextBirthday(int year, int month, int day)
 				next_Year_next_birthday += 31;
 			}
 			else if (i == 2)
-			{
+			{//lhl
 				if (IsLeapYear(year + 1))
 				{
 
@@ -205,7 +205,7 @@ int nextBirthday(int year, int month, int day)
 
 	}
 	return  next_Year_next_birthday + this_year_remain;
-}
+}//lhl
 
 
 int Calculate_the_age(int year, int month, int day)
@@ -234,8 +234,12 @@ int Calculate_the_age(int year, int month, int day)
 			is_add_year = 0;
 		}
 	}
+	else
+	{
+		is_add_year = 0;
+	}
 	return now_year - year + is_add_year;
-}
+}//lhl
 void cal_constellation(int month, int day)
 {
 	if (month == 1 && (day >= 21) || month == 2 && day <= 19)
@@ -281,7 +285,7 @@ void cal_constellation(int month, int day)
 	else if (month == 11 && day >= 23 || month == 12 && day <= 22)
 	{
 		cout << "射手座	11月23日 至 12月22日	活泼、思想开明 粗心、反覆无常" << endl;
-	}
+	}//lhl
 	else if (month == 12 && day >= 23 || month == 1 && day <= 22)
 	{
 		cout << "摩羯座	12月23日 至 01月22日	有原则、家庭观念 太现实、缺乏热情" << endl;
@@ -292,6 +296,18 @@ void cal_constellation(int month, int day)
 }
 bool is_true_input(int year, int month, int day)
 {
+	struct tm t;
+	time_t now;
+	time(&now);
+	localtime_s(&t, &now);   //获取当前年月日
+	int now_year = t.tm_year + 1900;
+	int now_month = t.tm_mon + 1;
+	int now_day = t.tm_mday;
+	int is_add_year = -1;
+	if (year > now_year)
+	{
+		return false;
+	}
 
 	if (month < 1 || month>12)
 	{
